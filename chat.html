@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ramayana Chatbot</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f1e8; padding: 20px; }
+    .chat-box { max-width: 700px; margin: auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .messages { height: 350px; overflow-y: scroll; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; background: #fafafa; }
+    .input-box { display: flex; gap: 10px; }
+    input[type="text"] { flex: 1; padding: 10px; }
+    button { padding: 10px 20px; background: #4CAF50; color: white; border: none; }
+  </style>
+</head>
+<body>
+  <div class="chat-box">
+    <h2>🙏 Ramayana Chatbot</h2>
+    <div class="messages" id="messages"></div>
+    <form class="input-box" onsubmit="sendMessage(event)">
+      <input type="text" id="message" placeholder="Ask anything about Ramayana..." required>
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script>
+    async function sendMessage(event) {
+      event.preventDefault();
+      const input = document.getElementById("message");
+      const messages = document.getElementById("messages");
+      const userText = input.value;
+
+      messages.innerHTML += `<p><strong>You:</strong> ${userText}</p>`;
+      input.value = "";
+
+      const formData = new FormData();
+      formData.append("message", userText);
+
+      const response = await fetch("/chat", {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json();
+      messages.innerHTML += `<p><strong>Bot:</strong> ${data.reply}</p>`;
+      messages.scrollTop = messages.scrollHeight;
+    }
+  </script>
+</body>
+</html>
