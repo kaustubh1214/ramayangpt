@@ -6,8 +6,6 @@ from sentence_transformers import SentenceTransformer, util
 from rank_bm25 import BM25Okapi
 import numpy as np
 import google.generativeai as genai
-import uvicorn  # Required for running manually
-import os  # Added for dynamic port binding
 
 # ---------------- FastAPI Setup ----------------
 app = FastAPI()
@@ -132,8 +130,3 @@ Now answer the user's question based on the verse and its context in Ramayana. E
         reply = f"Gemini error while answering: {e}"
 
     return JSONResponse({"reply": reply})
-
-# ---------------- Run App (for local or Render) ----------------
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    uvicorn.run("ramayn3:app", host="0.0.0.0", port=port)
